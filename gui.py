@@ -9,50 +9,6 @@ from PIL import Image, ImageTk
 import numpy as np
 import cv2
 
-# donwload haarcascade_frontalface_default from here "https://github.com/opencv/opencv/tree/master/data/haarcascades"
-eye_cascPath = 'D:/DeepLearning/face/opencv-face-recognition-python-master/opencv-files/haarcascade_eye_tree_eyeglasses.xml'  #eye detect model
-face_cascPath = 'D:/DeepLearning/face/opencv-face-recognition-python-master/opencv-files/haarcascade_frontalface_alt.xml'  #face detect model
-faceCascade = cv2.CascadeClassifier(face_cascPath)
-eyeCascade = cv2.CascadeClassifier(eye_cascPath)
-
-cap = cv2.VideoCapture(0)
-while 1:
-    ret, img = cap.read()
-    if ret:
-        frame = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        # Detect faces in the image
-        faces = faceCascade.detectMultiScale(
-            frame,
-            scaleFactor=1.1,
-            minNeighbors=5,
-            minSize=(30, 30),
-            # flags = cv2.CV_HAAR_SCALE_IMAGE
-        )
-        # print("Found {0} faces!".format(len(faces)))
-        if len(faces) > 0:
-            # Draw a rectangle around the faces
-            for (x, y, w, h) in faces:
-                cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
-            frame_tmp = img[faces[0][1]:faces[0][1] + faces[0][3], faces[0][0]:faces[0][0] + faces[0][2]:1, :]
-            frame = frame[faces[0][1]:faces[0][1] + faces[0][3], faces[0][0]:faces[0][0] + faces[0][2]:1]
-            eyes = eyeCascade.detectMultiScale(
-                frame,
-                scaleFactor=1.1,
-                minNeighbors=5,
-                minSize=(30, 30),
-                # flags = cv2.CV_HAAR_SCALE_IMAGE
-            )
-            if len(eyes) == 0:
-                print('no eyes!!!')
-            else:
-                print('eyes!!!')
-            frame_tmp = cv2.resize(frame_tmp, (400, 400), interpolation=cv2.INTER_LINEAR)
-            cv2.imshow('Face Recognition', frame_tmp)
-        waitkey = cv2.waitKey(1)
-        if waitkey == ord('q') or waitkey == ord('Q'):
-            cv2.destroyAllWindows()
-            break
-
 def FacialExpressionModel(json_file, weights_file):
     with open(json_file,"r") as file:
         loaded_model_json = file.read()
@@ -66,9 +22,9 @@ def FacialExpressionModel(json_file, weights_file):
 top =tk.Tk()
 top.geometry('800x600')
 top.title('Face Reader')
-top.configure(background='#CDCDCD')
+top.configure(background='#ffca9a')
 
-label1 = Label(top, background='#CDCDCD', font=('arial',15,'bold'))
+label1 = Label(top, background='#ffca9a', font=('arial',15,'bold'))
 sign_image = Label(top)
 
 facec = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
@@ -120,6 +76,6 @@ upload.pack(side='bottom',pady=50)
 sign_image.pack(side='bottom', expand='True')
 label1.pack(side='bottom', expand='True')
 heading = Label(top,text='Face Reader',pady=20,font=('arial',25,'bold'))
-heading.configure(background='#CDCDCD',foreground="#364156")
+heading.configure(background='#ffca9a',foreground="#364156")
 heading.pack()
 top.mainloop()
